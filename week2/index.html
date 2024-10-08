@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pig Latin Translator</title>
+</head>
+<body>
+
+<script>
+    // Prompt the user to enter a phrase
+    let inputPhrase = prompt("Enter a phrase");
+
+    // Check if the user entered nothing
+    if (!inputPhrase) {
+        document.write("Warning: You entered nothing! Please try again.");
+    } else {
+        document.write("You entered: " + inputPhrase + "<br>");
+
+        let vowels = "aeiouAEIOU"; 
+        let consonants = "BCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz"; 
+        let phrases = inputPhrase.split(" ");
+
+        // Translate each word
+        for (let phrase of phrases) {
+            // If the word begins with a vowel, append 'way' to the end of the word:
+            if (vowels.includes(phrase.charAt(0))) {
+                document.write(phrase + "way ");
+            }
+            // If the word begins with a consonant
+            else if (consonants.includes(phrase.charAt(0))) {
+                // If the word begins with two consonants
+                if (consonants.includes(phrase.charAt(1))) {
+                    document.write(phrase.slice(2) + phrase.charAt(0) + phrase.charAt(1) + "ay ");
+                }
+                // If the word begins with one consonant
+                else {
+                    document.write(phrase.slice(1) + phrase.charAt(0) + "ay ");
+                }
+            }
+            // If the first character is not a vowel or consonant (e.g., punctuation)
+            else {
+                document.write(phrase + " "); // You might want to handle punctuation differently
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
