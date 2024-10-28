@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script
+          src="https://code.jquery.com/jquery-3.7.1.min.js"
+          integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+          crossorigin="anonymous"></script>
+          <style> 
+          body{
+            background-color: #ccc;
+            color:blue;
+            h1{
+              color: blueviolet;
+              background: #bbb;
+              button{ color:darkmagenta}
+            }
+          }
+
+
+          </style>
+</head>
+<body>
+
+<h1>Robo Dealer</h1>
+
+  <button onclick="dealHand();">Deal Hand</button>
+
+<hr><div id="card_hand"></div>
+
+<script>
+
+  /* define Card object and deck of cards here */
+  
+  const suits =[ 'Heart', 'Spades', 'Diamonds' , 'Clubs'];
+  const values=['2', '3' ,'4' ,'5' ,'6', '7' ,'8', '9 ', '10' ,'Ace', 'Jack', 'Queen', 'King'];
+  
+  function dealHand(){
+    
+    let= hand=[];
+
+
+    for(let i=0; i< 5; i++){
+      let= suit=suits[(Math.floor(Math.random() * suits.length))
+
+      ];
+      let value=values[(Math.floor(Math.random() * values.length))];
+      hand.push(`${value} of ${suit}`);
+
+
+    }
+    document.getElementById('card_hand').innerHTML=hand.join ('<br>');
+
+  }
+ 
+    
+</script>
+
+</body>
+</html>
