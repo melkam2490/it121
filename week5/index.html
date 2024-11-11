@@ -1,58 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <script
-          src="https://code.jquery.com/jquery-3.7.1.min.js"
-          integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-          crossorigin="anonymous"></script>
-          <style> 
-          body{
-            background-color: #ccc;
-            color:blue;
-            h1{
-              color: blueviolet;
-              background: #bbb;
-              button{ color:darkmagenta}
-            }
-          }
-
-
-          </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robo Dealer</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <style> 
+    body {
+      background-color: #ccc;
+      color: blue;
+    }
+    h1 {
+      color: blueviolet;
+      background: #bbb;
+    }
+    button {
+      color: darkmagenta;
+    }
+  </style>
 </head>
 <body>
 
 <h1>Robo Dealer</h1>
+<button onclick="dealHand();">Deal Hand</button>
 
-  <button onclick="dealHand();">Deal Hand</button>
-
-<hr><div id="card_hand"></div>
+<hr>
+<div id="card_hand"></div>
 
 <script>
-
-  /* define Card object and deck of cards here */
-  
-  const suits =[ 'Heart', 'Spades', 'Diamonds' , 'Clubs'];
-  const values=['2', '3' ,'4' ,'5' ,'6', '7' ,'8', '9 ', '10' ,'Ace', 'Jack', 'Queen', 'King'];
-  
-  function dealHand(){
-    
-    let= hand=[];
-
-
-    for(let i=0; i< 5; i++){
-      let= suit=suits[(Math.floor(Math.random() * suits.length))
-
-      ];
-      let value=values[(Math.floor(Math.random() * values.length))];
-      hand.push(`${value} of ${suit}`);
-
-
+  // Define Card object with value and suit properties
+  class Card {
+    constructor(value, suit) {
+      this.value = value;
+      this.suit = suit;
     }
-    document.getElementById('card_hand').innerHTML=hand.join ('<br>');
 
+    // Method to return the card name (face cards as strings, numbers as is)
+    getCardName() {
+      const faceCardNames = {
+        11: 'Jack',
+        12: 'Queen',
+        13: 'King',
+        14: 'Ace'
+      };
+      if (this.value >= 2 && this.value <= 10) {
+        return `${this.value} of ${this.suit}`;
+      } else {
+        return `${faceCardNames[this.value]} of ${this.suit}`;
+      }
+    }
   }
- 
-    
+
+  // Define suits and values
+  const suits = ['Hearts', 'Spades', 'Diamonds', 'Clubs'];
+  const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+
+  // Generate the deck of cards (52 cards)
+  function generateDeck() {
+    let deck = [];
+    for (let suit of suits) {
+      for (let value of values) {
+        deck.push(new Card(value, suit));
+      }
+    }
+    return deck;
+  }
+
+  //  a random hand of 5 cards
+  function dealHand() {
+    const deck = generateDeck();
+    let hand = [];
+    for (let i = 0; i < 5; i++) {
+      let randomIndex = Math.floor(Math.random() * deck.length);
+      hand.push(deck[randomIndex].getCardName());
+    }
+
+    // Display the hand on my HTML
+    document.getElementById('card_hand').innerHTML = hand.join('<br>');
+  }
+
 </script>
 
 </body>
