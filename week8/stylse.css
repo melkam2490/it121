@@ -1,0 +1,107 @@
+/* General Page Styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f0f8ff;
+  color: #333;
+}
+
+h3 {
+  color: #2c3e50;
+  text-align: center;
+}
+
+hr {
+  border: 1px solid #ccc;
+  width: 100%;
+  margin: 20px 0;
+}
+
+/* Form Styling */
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Error message styling */
+#errorMessage {
+  margin-top: 10px;
+  color: red;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Forecast Styling */
+#forecast {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.day {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  padding: 15px;
+  margin: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.day h3 {
+  font-size: 18px;
+  color: #3498db;
+  margin-bottom: 10px;
+}
+
+.day img {
+  width: 50px;
+  height: 50px;
+}
+
+.day p {
+  margin: 5px 0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .day {
+    width: 100%;
+  }
+
+  form {
+    width: 100%;
+  }
+}
+</style>
