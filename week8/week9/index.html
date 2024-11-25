@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw me a picture</title>
+    <style>
+        canvas {
+            border: 1px solid brown;
+        }
+    </style>
+</head>
+<body>    <canvas id="myCanvas" width="400" height="400" ></canvas>
+
+    <script>
+      
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let x = 40;  
+        let y = 40; 
+        let speedX = 3; 
+        let speedY = 3;  
+
+        function draw() {
+           
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw  my a  rectangle
+            ctx.fillStyle = 'blue'; 
+            ctx.fillRect(x, y, 40, 40); 
+
+            // Draw  my a line
+            ctx.strokeStyle = '#0000FF';  
+            ctx.lineWidth = 3; 
+            ctx.beginPath();
+            ctx.moveTo(0, 0);  
+            ctx.lineTo(x, y);  
+            ctx.stroke();
+
+            // Draw a circle (arc)
+            ctx.strokeStyle = 'green';  
+            ctx.beginPath();
+            ctx.arc(100, 100, 50, 0, Math.PI * 2);  
+            ctx.stroke();
+
+            ctx.fillStyle = '#FFD700'; 
+            ctx.beginPath();
+            ctx.arc(200, 200, 30, 0, Math.PI * 2);  
+            ctx.fill();  
+
+           
+            x += speedX;
+            y += speedY;
+
+          
+            if (x > canvas.width - 50 || x < 0) {
+                speedX = -speedX;  
+            }
+            if (y > canvas.height - 50 || y < 0) {
+                speedY = -speedY; 
+            }
+
+         
+            requestAnimationFrame(draw);
+        }
+
+        // Start my  animation
+        draw();
+    </script>
+</body>
+</html>
