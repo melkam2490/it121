@@ -1,0 +1,16 @@
+{
+  "name": "my-web-server",
+  "version": "1.0.0",
+  "description": "A simple web server built with Node.js",
+  "main": "index.js",
+  "type": "module",   
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Melkam Worku",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/melkam2490/it121.git"
+  },
+  "license": "ISC"
+}
