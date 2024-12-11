@@ -83,81 +83,90 @@
   <div id="forecast"></div>
 
   <script>
-    // This is my  API key 
-    const API_KEY = "bc64dc3de34a45040c2180cc50cb4b62"; 
-  
-    // my URLs for weather and forecast APIs
+    // API key for OpenWeather API
+    const API_KEY = "bc64dc3de34a45040c2180cc50cb4b62";
+
+    // API URLs for geocoding (coordinates) and forecast
     const GEOCODING_API_URL = "https://api.openweathermap.org/data/2.5/weather?appid=" + API_KEY;
-    const FORECAST_API_URL = "https://api.openweathermap.org/data/2.5/forecast?appid=" + API_KEY + "&units=metric";
-  
+    const FORECAST_API_URL = "https://api.openweathermap.org/data/2.5/forecast?appid=" + API_KEY;
+
     // Function to convert temperature from Kelvin to Fahrenheit
     const kelvinToF = (value) => {
-    var fahrenheit = (((Number(value) - 273.15)*9)/5) + 32;
-    return fahrenheit.toFixed(2);
-  }
+      return (((Number(value) - 273.15) * 9) / 5 + 32).toFixed(2);
+    };
+
     // Function to format the date from timestamp
     const formatDate = (timestamp) => {
-      
       const date = new Date(timestamp * 1000);
       return date.toLocaleDateString("en-US", { weekday: 'short', month: 'short', day: 'numeric' });
     };
-  
+
     // Function to get the city coordinates (latitude & longitude)
     const getCityCoordinates = async (cityOrZip) => {
-      const url = cityOrZip.length === 5 
-        ? `${GEOCODING_API_URL}&zip=${cityOrZip},us`  //  it's a zip code
-        : `${GEOCODING_API_URL}&q=${cityOrZip},us`; // it's a city name
-  
-      const response = await fetch(url);  // Send request to API
-      const data = await response.json(); // Parse response as JSON
-  
-      if (data.cod !== 200) {
-        throw new Error("City not found!");  // it Show error if city isn't found
+      let url = '';
+      
+      // Check if it's a zip code (length of 5 and numeric)
+      if (cityOrZip.length === 5 && !isNaN(cityOrZip)) {
+        url = `${GEOCODING_API_URL}&zip=${cityOrZip},us`; // Zip code format
+      } 
+      // Otherwise, treat it as a city name
+      else {
+        url = `${GEOCODING_API_URL}&q=${cityOrZip},us`; // City name format
       }
-  
-      return data.coord;  
+
+      // Send request to OpenWeather API
+      const response = await fetch(url);
+      const data = await response.json();
+
+      // Check if data is valid
+      if (data.cod !== 200) {
+        throw new Error("City or Zip code not found!");
+      }
+
+      return data.coord; // Return latitude and longitude
     };
-  
+
     // Function to get the weather forecast data using coordinates
     const getWeatherForecast = async (lat, lon) => {
       const url = `${FORECAST_API_URL}&lat=${lat}&lon=${lon}`; // Build the forecast URL with coordinates
-      const response = await fetch(url);  // Send request to API
-      const data = await response.json(); // Parse response as JSON
-  
+      const response = await fetch(url);
+      const data = await response.json();
+
+      // Check if forecast data exists
       if (!data.list || data.list.length === 0) {
         throw new Error("No forecast data available.");
       }
-  
-      return data; 
+
+      return data; // Return the forecast data
     };
-  
+
     // When the user submits the form to get the weather
     document.getElementById("weatherForm").addEventListener("submit", async (event) => {
-      event.preventDefault();  // Prevent the form from submitting normally
-  
+      event.preventDefault(); // Prevent the form from submitting normally
+
       // Clear any previous error messages or forecasts
       document.getElementById("errorMessage").innerText = "";
       document.getElementById("forecast").innerHTML = "";
-  
+
       // Get city or zip code from user input
       const cityOrZip = document.getElementById("city").value.trim() || document.getElementById("zip").value.trim();
-  
+
       // If no city or zip code is entered, show an error message
       if (!cityOrZip) {
         document.getElementById("errorMessage").innerText = "Please enter a city or zip code.";
         return;
       }
-  
+
       try {
         // Get the coordinates of the city (latitude and longitude)
         const coordinates = await getCityCoordinates(cityOrZip);
-  
+
         // Get the weather forecast data using the coordinates
         const forecastData = await getWeatherForecast(coordinates.lat, coordinates.lon);
-  
+
         let forecastHTML = "";  // to store the forecast HTML
-  
-        // we will show data for 5 days
+
+        // Loop through the forecast data (for the next 5 days)
         let dayCount = 0;
         for (let i = 0; i < forecastData.list.length; i++) {
           const forecast = forecastData.list[i];
@@ -165,10 +174,8 @@
           // Only take the first forecast of each day (e.g., 12 AM)
           if (i === 0 || formatDate(forecast.dt) !== formatDate(forecastData.list[i - 1].dt)) {
             dayCount++;
-            
-      
-            if (dayCount > 5) break;
-  
+            if (dayCount > 5) break; // Show forecast for the next 5 days
+
             // Add the forecast data for the day to the HTML string
             forecastHTML += `
               <div class="day">
@@ -177,22 +184,20 @@
                 <p><b>Min Temp:</b> ${kelvinToF(forecast.main.temp_min)}°F</p>
                 <p><b>Max Temp:</b> ${kelvinToF(forecast.main.temp_max)}°F</p>
                 <p><b>Humidity:</b> ${forecast.main.humidity}%</p>
-                <p><b>Weather Condation:</b> ${forecast.weather[0].description}</p>
+                <p><b>Weather Condition:</b> ${forecast.weather[0].description}</p>
               </div>
             `;
           }
         }
-  
+
         // Show the forecast data on the page
         document.getElementById("forecast").innerHTML = forecastHTML;
-  
+
       } catch (error) {
-        // we will catch  an error (e.g., city not found), show the error message
+        // Show error message if something goes wrong
         document.getElementById("errorMessage").innerText = error.message;
       }
     });
   </script>
-  
-  
 </body>
 </html>
